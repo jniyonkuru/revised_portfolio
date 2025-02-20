@@ -4,7 +4,7 @@ import HomeImage from '../components/HomeImage';
 import HomePageSkillsCardsCollection from '../components/HomePageskillsCardsCollection';
 import HomePageFooter from '../components/HomePageFooter';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import {Box, Typography, Divider, Paper } from '@mui/material';
+import {Box, Typography, Divider} from '@mui/material';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import  ExperienceTimeline from "../components/ExperienceTimeline"
 import PersonIcon from '@mui/icons-material/Person';

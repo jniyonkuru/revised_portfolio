@@ -1,6 +1,6 @@
 import { SvgIcon } from "@mui/material";
 
-function Logo(props:any) {
+function Logo(props:Record<string,any>) {
   return (
     <SvgIcon {...props} viewBox="0 0 80 80">
         <svg>

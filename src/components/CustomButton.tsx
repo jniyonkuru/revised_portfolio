@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button, Icon } from '@mui/material';
+import { Button} from '@mui/material';
 import { SvgIconProps } from '@mui/material';
 
 interface Props{
   text:string,
   Icon:React.ComponentType<SvgIconProps>,
   href:string,
-  other?:any
+  other?:Record<string,any>
 }
 
 function CustomButton({Icon,text,href,other}:Props) {

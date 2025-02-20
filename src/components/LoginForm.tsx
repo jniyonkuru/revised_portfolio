@@ -24,7 +24,7 @@ const style={
 
 }
 
-const LoginForm = ({open,handleClose,handleOpen ,closeWithX}:Props) => {
+const LoginForm = ({open,handleClose ,closeWithX}:Props) => {
 
   const [showPassword,setShowPassword]=useState(false);
 

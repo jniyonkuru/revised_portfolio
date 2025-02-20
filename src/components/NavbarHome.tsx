@@ -17,6 +17,7 @@ interface Props{
     const {window}=props;
     const [open, setOpen]=useState(false);
     const handleClose=(e:React.SyntheticEvent,reason?:string)=>{
+      e.preventDefault();
        if( reason&&reason=='backdropClick'){
            return;
        }
