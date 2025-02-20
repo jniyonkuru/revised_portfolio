@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material"
+import HomePage from "./pages/HomePage"
 
 function App() {
     return (
-   <Typography sx={{color:'primary.main'}}>heyyyyyy</Typography>
-  )
+        <HomePage/>
+)
 }
 
 export default App

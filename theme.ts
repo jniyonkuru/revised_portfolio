@@ -6,21 +6,24 @@ const theme = createTheme({
 
   cssVariables: true,
   typography: {
-    fontFamily: " 'Playfair Display', 'Roboto', 'Arial', sans-serif",
+    fontFamily: "'Roboto', 'Arial', sans-serif",
   },
   palette: {
     primary: {
-      main: '#1E4854',
+      main: '#3d3f3c',
       light:'#22755b',
       contrastText:'#152625'
     },
     secondary: {
-      main: '#757575',
+      main: '#0baed4',
       light:'#b9d9cc'
     },
     error: {
       main: red.A400,
     },
+    background:{
+      default:'#eeeeee'
+    }
   },
   components: {
     MuiSvgIcon: {
