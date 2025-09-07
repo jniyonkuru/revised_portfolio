@@ -11,13 +11,12 @@ import PersonIcon from '@mui/icons-material/Person';
 
 function HomePage() {
   return (
-    <Box sx={{backgroundImage:'url("/background1.jpg")', backgroundSize: "cover",
-      backgroundPosition: "center" , padding:"30px 50px"}}>
-        <header>
+    <Box sx={{backgroundImage:'url("/background1.jpg")', backgroundSize: "cover", position:'relative',
+      backgroundPosition: "center" }}>
+        < Box component='header' sx={{zIndex:100,background:'rgba(255,255,255,0.2)' ,position:'sticky',top:0, left:0,width:'100%', backdropFilter:'blur(5px)', mb:'1px solid rgba(255, 255 ,255,0.5 )'}}>
             <NavbarHome/>
-        </header>
-        <main>
-        <Divider sx={{ boxShadow: "0px 0.5px 0px rgba(255, 255, 255, 0.5)"}} />
+        </Box>
+        <Box component='main' sx={{padding:{xs:'5px 10px',md:'10px 20px'}}}>
           <Box sx={{textAlign:'center',pt:5}}>
           <HomeImage/>
             <HomeSummaryNote/>
@@ -59,7 +58,7 @@ function HomePage() {
             <Box >
             <HomePageFooter/>
             </Box>
-        </main>
+        </Box>
     </Box>
   )
 }

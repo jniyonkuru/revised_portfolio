@@ -9,9 +9,12 @@ function HomePageFooter() {
        <Box sx={{textAlign:'center',color:'white'}}>
         <Typography variant='h4'>Get In Touch</Typography>
         <Typography sx={{my:2}}>Let's connect and bring your projects to life.</Typography>
+
+        <Box sx={{display:'flex', flexDirection:{xs:'column', md:'row'}, justifyContent:"center"}}>
         <CustomButton text='LinkedIn' href='https://www.linkedin.com/in/jacques-niyonkuru-55b12b180/' Icon={MailOutlineIcon}/>
         <CustomButton href='mailto:niyonkurujacques@gmail.com'  text='Email'  Icon={MailOutlineIcon}/>
         <CustomButton href='/Jacques_Resume.pdf' other={{download:'Resume.pdf'}} text='Resume'  Icon={DescriptionIcon}/>
+        </Box>
         </Box>
 
   )

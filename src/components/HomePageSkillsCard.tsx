@@ -12,7 +12,7 @@ interface Props{
 }
 function HomePageSkillsCard({mediaUrl,tech,description,projectUrl}:Props) {
   return (
-    <Card  sx={{maxWidth:300 ,background:'transparent', boxShadow:"0px 0px 1px #F5F5F5",p:1, borderRadius:'8px'}}>
+    <Card  sx={{maxWidth:{xs:'100%',md:300} ,background:'transparent', boxShadow:"0px 0px 1px #F5F5F5",p:1, borderRadius:'8px'}}>
     <CardActionArea>
     <CardMedia
     component='img'

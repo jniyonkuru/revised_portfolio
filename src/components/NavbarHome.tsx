@@ -45,7 +45,7 @@ interface Props{
         <Divider sx={{mt:3}}/>
         <Stack direction='column' sx={{textAlign:'start'}} >
          {navItems.map((item,index)=>(
-              <Button key={`${item}-${index}`} onClick={item==="Login"?handleOpen:undefined} sx={{backgroundColor:"primary.main",color:"#fff" ,justifyContent: "flex-start" ,pl:3,
+              <Button key={`${item}-${index}`} onClick={item==="Login"?handleOpen:undefined} sx={{backgroundColor:"transparent",color:"#fff" ,justifyContent: "flex-start" ,pl:3,
                 '&:hover':{color:'secondary.main'}, 
                }}>
                 {item}
@@ -59,7 +59,7 @@ interface Props{
    return (
 
     <Box >
-        <Box component='nav' sx={{marginInline:'auto',pb:1}}>
+        <Box component='nav' sx={{marginInline:'auto',p:'15px' }}>
         <Box sx={{display:'flex', alignItems:'center',justifyContent:'space-between'}}>
         <LoginForm handleClose={handleClose} handleOpen={handleOpen} open={open} closeWithX={closeWithX}/>
             <IconButton onClick={handleDrawerToggle} sx={{mr:2,display:{md:'none', sm:'none',lg:'none'},color:'secondary.main'}}>
@@ -84,7 +84,7 @@ interface Props{
           }}
           sx={{
             display: { xs: 'block', sm: 'none' ,md:'none',lg:'none'},
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,backgroundColor:"primary.main" },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,backgroundColor:"rgba(255,255,255,0.2)", backdropFilter:'blur(10px)' },
           }}
         >
           {drawer}

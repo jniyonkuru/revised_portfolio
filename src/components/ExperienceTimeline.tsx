@@ -23,7 +23,7 @@ function ExperienceTimeline() {
             <TimelineConnector/>
             </TimelineSeparator>
   <TimelineContent>
-    <Box sx={{display:'flex', gap:3,p:1 ,justifyContent:'flex-start',alignItems:'center'}}>
+    <Box sx={{display:'flex', gap:3,p:1 ,justifyContent:'flex-start',alignItems:'center', flexDirection:{xs:'column' ,md:'row'}}}>
        <Box>
         <Typography variant='h5' sx={{color:'secondary.main', textWrap:'nowrap'}}>Andela Rwanda</Typography>
        <Typography>
