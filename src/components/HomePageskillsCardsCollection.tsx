@@ -36,7 +36,7 @@ const projects=[
 ]
 function HomePageSkillsCardsCollection() {
   return (
-    <Box sx={{display:'flex', flexWrap:'wrap', gap:2,padding:2}}>
+    <Box sx={{display:'flex', flexWrap:'wrap', gap:2,padding:4}}>
 
       {projects.map((item,index)=>(
         <HomePageSkillsCard key={`${item}-${index}`} {...item}/>

@@ -1,5 +1,5 @@
 
-import { Box, Typography ,Card ,CardActionArea,CardMedia,CardContent,Chip, CardActions, Button} from '@mui/material'
+import { Typography ,Card ,CardMedia,CardContent, CardActions, Button} from '@mui/material'
 
 
 interface Props{
@@ -10,30 +10,25 @@ interface Props{
   
    
 }
-function HomePageSkillsCard({mediaUrl,tech,description,projectUrl}:Props) {
+function HomePageSkillsCard({mediaUrl,description,projectUrl}:Props) {
   return (
-    <Card  sx={{maxWidth:{xs:'100%',md:300} ,background:'transparent', boxShadow:"0px 0px 1px #F5F5F5",p:1, borderRadius:'8px'}}>
-    <CardActionArea>
+    <Card  elevation={0} sx={{maxWidth:{xs:'100%',md:220},display:'flex', flexDirection:'column',justifyContent:"space-between" ,background:'transparent', borderRadius:'16px'}}>
     <CardMedia
     component='img'
-    height='190'
+    height='180'
     image={mediaUrl}
-    sx={{borderRadius:'8px'}}
+    sx={{boxShadow:1, borderRadius:'16px'}}
+    
     />
-   <CardContent sx={{background:'rgba(0,0,0,0.2)'}}>
-    <Box>
-    {tech.map((item,index)=>(
-      <Chip key={`${item}-${index}`} sx={{color:'#fff',backgroundColor:index%2==0?'#19264b':'#122f18'}} label={item} />
-    ))}
-    </Box>
-    <Typography sx={{color:'grey.500'}}>{description}</Typography>
+   <CardContent>
+    <Typography sx={{color:'primary.contrastText'}}>{description}</Typography>
    </CardContent>
    <CardActions>
-    <Button href={projectUrl} variant='contained' sx={{color:'#fff', backgroundColor:"secondary.main",borderRadius:'8px'}}>
+    <Button href={projectUrl} variant='outlined' sx={{color:'primary.main',fontSize:'0.7rem', backgroundColor:"#EEEEEE",borderRadius:'16px'}}>
        View
     </Button>
    </CardActions>
-   </CardActionArea>
+  
     </Card>
   )
 }

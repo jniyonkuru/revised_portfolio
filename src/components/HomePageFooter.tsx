@@ -6,8 +6,8 @@ import DescriptionIcon from '@mui/icons-material/Description';
 
 function HomePageFooter() {
   return (
-       <Box sx={{textAlign:'center',color:'white'}}>
-        <Typography variant='h4'>Get In Touch</Typography>
+       <Box sx={{textAlign:'center',color:'black'}}>
+        <Typography variant='h5' sx={{fontWeight:'bold'}}>Get In Touch</Typography>
         <Typography sx={{my:2}}>Let's connect and bring your projects to life.</Typography>
 
         <Box sx={{display:'flex', flexDirection:{xs:'column', md:'row'}, justifyContent:"center"}}>

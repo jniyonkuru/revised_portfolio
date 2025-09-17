@@ -8,12 +8,12 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#3d3f3c',
-      light:'#22755b',
-      contrastText:'#152625'
+      main: '#000000',
+      light:'#e2e5e6',
+      contrastText:'#00000'
     },
     secondary: {
-      main: '#0baed4',
+      main: '#000000',
       light:'#b9d9cc'
     },
     error: {
@@ -31,6 +31,21 @@ const theme = createTheme({
         }
       }
     },
+    MuiButton:{
+      styleOverrides:{
+        root:{
+          textTransform:"none"
+        }
+      }
+    },
+    MuiTab:{
+      styleOverrides:{
+        root:{
+          textTransform:"none",
+          fontWeight:'bold'
+        }
+      }
+    }
   },
 
 });

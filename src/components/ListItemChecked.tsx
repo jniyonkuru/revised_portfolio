@@ -8,7 +8,7 @@ function ListItemChecked({text}:{text:string}) {
       <ListItemIcon>
         <CheckCircleOutlineIcon sx={{color:"secondary.main"}} />
       </ListItemIcon>
-      <ListItemText>{text}</ListItemText>
+      <ListItemText sx={{color:"black"}}>{text}</ListItemText>
       </ListItem>
   )
 }
