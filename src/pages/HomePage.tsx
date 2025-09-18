@@ -10,9 +10,11 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import ExperienceTimeline from "../components/ExperienceTimeline";
 import PersonIcon from "@mui/icons-material/Person";
 import CustomTabPanel from "../components/CustomTabPanel";
+import { useTheme } from '@mui/material/styles';
 
 function HomePage() {
   const [value, setValue] = React.useState(0);
+  const theme=useTheme();
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
       event.preventDefault()
     
@@ -31,7 +33,7 @@ function HomePage() {
         component="header"
         sx={{
           background:
-            "linear-gradient(90deg, #ffffff 0%, #fce8b5 20%, #e2e5e6 100%)",
+            `linear-gradient(90deg, ${theme.palette.primary.light} , ${theme.palette.primary.main})`,
           width: "100%",
           height:'100px'
         }}
@@ -82,13 +84,13 @@ function HomePage() {
             <Box sx={{ width: { xs: "100%", lg: "50%" } }}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <FolderOpenIcon
-                  sx={{ color: "primary.contrastText", fontSize: "30px" }}
+                  sx={{ color: "text.primary", fontSize: "30px" }}
                 />
                 <Typography
                   component="span"
                   variant="h5"
                   sx={{
-                    color: "primary.contrastText",
+                    color: "text.primary",
                     textAlign: "center",
                     ml: 2,
                     fontWeight: "bold",
@@ -106,13 +108,13 @@ function HomePage() {
           <Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <BusinessCenterIcon
-                sx={{ color: "primary.contrastText", fontSize: "30px" }}
+                sx={{ color: "text.primary", fontSize: "30px" }}
               />
               <Typography
                 component="span"
                 variant="h5"
                 sx={{
-                  color: "primary.contrastText",
+                  color: "text.primary",
                   textAlign: "center",
                   ml: 2,
                   fontWeight: "bold",
@@ -130,13 +132,13 @@ function HomePage() {
           <Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <PersonIcon
-                sx={{ color: "primary.contrastText", fontSize: "30px" }}
+                sx={{ color: "text.primary", fontSize: "30px" }}
               />
               <Typography
                 component="span"
                 variant="h5"
                 sx={{
-                  color: "primary.contrastText",
+                  color: "text.primary",
                   textAlign: "center",
                   ml: 2,
                   fontWeight: "bold",
@@ -147,7 +149,7 @@ function HomePage() {
             </Box>
             <Typography
               component="p"
-              sx={{ color: "primary.contrastText", m: 2 }}
+              sx={{ color: "text.primary", m: 2 }}
             >
               I’m Jacques Niyonkuru, an aspiring software engineer passionate
               about building scalable and user-friendly web applications. With a

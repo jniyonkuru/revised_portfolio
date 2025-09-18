@@ -7,6 +7,7 @@ import UserButton from "./UserButton";
 import ThemeToggler from "./ThemeToggler";
 import { useLocation } from "react-router-dom";
 
+
 const drawerWidth = 230;
 const navItems = [
   { title: "Home", to: "/" },
@@ -18,8 +19,10 @@ interface Props {
 }
 
 function NavBar(props: Props) {
+
   const { window } = props;
   const [open, setOpen] = useState(false);
+  
   const location = useLocation();
   const handleClose = (e: React.SyntheticEvent, reason?: string) => {
     e.preventDefault();

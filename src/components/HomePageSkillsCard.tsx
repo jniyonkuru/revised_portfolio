@@ -21,10 +21,10 @@ function HomePageSkillsCard({mediaUrl,description,projectUrl}:Props) {
     
     />
    <CardContent>
-    <Typography sx={{color:'primary.contrastText'}}>{description}</Typography>
+    <Typography sx={{color:'text.primary'}}>{description}</Typography>
    </CardContent>
    <CardActions>
-    <Button href={projectUrl} variant='outlined' sx={{color:'primary.main',fontSize:'0.7rem', backgroundColor:"#EEEEEE",borderRadius:'16px'}}>
+    <Button href={projectUrl} variant='outlined' sx={{color:'text.primary',fontSize:'0.7rem', backgroundColor:"",borderRadius:'16px'}}>
        View
     </Button>
    </CardActions>
