@@ -4,15 +4,17 @@ import { Routes,Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import generateTheme from "../theme";
 import { useThemeContext } from "./themeContext";
+import UserProvider from "./UserContext";
 function App() {
     const{theme}=useThemeContext()
     return (
     <ThemeProvider theme={generateTheme(theme==='dark')}>
+        <UserProvider>
         <Routes>
             <Route element={ <HomePage/>} path="/"/>
             <Route element={<Dashboard/>} path='/dashboard'/>
         </Routes>
-        
+        </UserProvider>
         </ThemeProvider>
        
 )

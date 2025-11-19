@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Divider, IconButton, Button, Drawer, Stack } from "@mui/material";
 import LoginForm from "./LoginForm";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -6,6 +6,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import UserButton from "./UserButton";
 import ThemeToggler from "./ThemeToggler";
 import { useLocation } from "react-router-dom";
+import { UserContext,Role } from "../UserContext";
 
 
 const drawerWidth = 230;
@@ -22,6 +23,7 @@ function NavBar(props: Props) {
 
   const { window } = props;
   const [open, setOpen] = useState(false);
+  const user= useContext(UserContext)
   
   const location = useLocation();
   const handleClose = (e: React.SyntheticEvent, reason?: string) => {
@@ -53,12 +55,12 @@ function NavBar(props: Props) {
           onClick={handleDrawerToggle}
           sx={{ color: "secondary.main",  }}
         >
-          <MenuOpenIcon />
+         <MenuOpenIcon />
         </IconButton>
       </Box>
       <Divider sx={{ mt: 3 }} />
       <Stack direction="column" sx={{ textAlign: "start" }}>
-        {navItems.map((item, index) => (
+        {user&&user.role==Role.admin?navItems.map((item, index) => (
           <Button
             key={`${item}-${index}`}
             sx={{
@@ -73,12 +75,30 @@ function NavBar(props: Props) {
           >
             {item.title}
           </Button>
+
+        )):navItems.filter((item)=>item.title!=='Dashboard').map((item, index) => (
+          <Button
+            key={`${item}-${index}`}
+            sx={{
+              backgroundColor:location.pathname===item.to?"black":"transparent",
+              color: "",
+              justifyContent: "flex-start",
+              pl: 3,
+              height: "100%",
+              borderRadius: "inherit",
+              "&:hover": { backgroundColor: "grey" },
+            }}
+          >
+            {item.title}
+          </Button>
+
         ))}
       </Stack>
     
     </Box>
   );
   const container = window !== undefined ? window().document.body : undefined;
+
   return (
     <Box>
       <Box component="nav" sx={{ marginInline: "auto", p: "8px 15px"}}>
@@ -95,16 +115,19 @@ function NavBar(props: Props) {
             open={open}
             closeWithX={closeWithX}
           />
-          <IconButton
+         {mobileOpen?null: <IconButton
             onClick={handleDrawerToggle}
             sx={{
               mr: 2,
               display: { md: "none", sm: "none", lg: "none" },
               color: "secondary.main",
+  
             }}
           >
             <MenuIcon />
           </IconButton>
+         }
+       
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
@@ -118,19 +141,37 @@ function NavBar(props: Props) {
             
             }}
           >
-            {navItems.map((item, index) => (
-              <Button
-                href={item.to}
-                key={`${item}-${index}`}
-                sx={{
-                  color:location.pathname===item.to? "black" :"grey.500",
-                  height: "100%", 
-                  borderRadius: "inherit",
-                }}
-              >
-                {item.title}
-              </Button>
-            ))}
+        {user&&user.role==Role.admin?navItems.map((item, index) => (
+          <Button
+            key={`${item}-${index}`}
+            sx={{
+              backgroundColor:location.pathname===item.to?"black":"transparent",
+              color: "",
+              justifyContent: "flex-start",
+              pl: 3,
+              height: "100%",
+              borderRadius: "inherit",
+              "&:hover": { backgroundColor: "grey" },
+            }}
+          >
+            {item.title}
+          </Button>
+
+        )):navItems.filter((item)=>item.title!=='Dashboard').map((item, index) => (
+          <Button
+            key={`${item}-${index}`}
+            sx={{
+              color:location.pathname===item.to?"black":"transparent",
+              justifyContent: "flex-start",
+              pl: 3,
+              height: "100%",
+              borderRadius: "inherit",
+            }}
+          >
+            {item.title}
+          </Button>
+
+        ))}
              
           </Box>
 
@@ -156,7 +197,7 @@ function NavBar(props: Props) {
             {drawer}
           </Drawer>
           <Box sx={{display:'flex',gap:2, alignItems:'flex-start'}}>
-          <UserButton/>
+         {user&&<UserButton/>}
           <ThemeToggler/>
           </Box>
         </Box>
