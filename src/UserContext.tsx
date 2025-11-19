@@ -15,7 +15,7 @@ import React,{createContext,useState} from 'react'
 
 function UserProvider({children}:{children:React.ReactNode}) {
 
-    const [user,setUser]=useState<User|null>(null)
+    const [user]=useState<User|null>(null)
   return (
     <UserContext.Provider value={user}>
         {children}
