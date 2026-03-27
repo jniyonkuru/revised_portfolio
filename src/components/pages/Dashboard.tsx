@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import Navbar from "../components/Navbar";
-import UserDetails from "../components/UserDetails";
-import BigButton from "../components/BigButton";
+import Navbar from "../Navbar";
+import UserDetails from "../UserDetails";
+import BigButton from "../BigButton";
 import AddIcon from "@mui/icons-material/Add";
 
 function Dashboard() {
@@ -19,15 +19,20 @@ function Dashboard() {
       </Box>
       <Box
         component="main"
-        sx={{ display: "flex", width: "100%", justifyContent: "space-between" ,padding:2 }}
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
+          padding: 2,
+        }}
       >
-        <Box component="section" id="section1" sx={{ width:"40%"}}>
-          <UserDetails  />
+        <Box component="section" id="section1" sx={{ width: "40%" }}>
+          <UserDetails />
         </Box>
         <Box
           component="section"
           id="section2"
-          sx={{ display: "flex", flexDirection: { md: "column" } ,flex:1}}
+          sx={{ display: "flex", flexDirection: { md: "column" }, flex: 1 }}
         >
           <BigButton
             Icon={AddIcon}

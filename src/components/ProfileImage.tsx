@@ -12,9 +12,9 @@ function ProfileImage({ width, height }: Props) {
       src="/me.jpg"
       alt="Random"
       sx={{
-        width: width ? `${width}px` : "200px",
-        height: height ? `${height}px` : "200px",
-        borderRadius:32,
+        width: width ? `${width}px` : "150px",
+        height: height ? `${height}px` : "150px",
+        borderRadius:"inherit",
       }}
     ></Box>
   );
