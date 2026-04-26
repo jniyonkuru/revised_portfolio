@@ -1,31 +1,33 @@
-import React, { useState, useContext } from "react";
-import { Box, Divider, IconButton, Button, Drawer, Stack } from "@mui/material";
+import { useState, useContext, useEffect } from "react";
+import { Box} from "@mui/material";
 import LoginForm from "./LoginForm";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import UserButton from "./UserButton";
 import ThemeToggler from "./ThemeToggler";
-import { useLocation } from "react-router-dom";
-import { UserContext, Role } from "../UserContext";
 
-const drawerWidth = 230;
-const navItems = [
-  { title: "Home", to: "/" },
-  { title: "Dashboard", to: "/dashboard" },
-];
+//local packages
+import { UserContext } from "../UserContext";
+import NavigationLink from "./NavLink";
+import { User } from "../types";
+import type { UserContextType } from "../UserContext";
 
-interface Props {
-  window?: () => Window;
-}
 
-function NavBar(props: Props) {
-  const { window } = props;
+function NavBar() {
   const [open, setOpen] = useState(false);
-  const user = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const location = useLocation();
-  const handleClose = (e: React.SyntheticEvent, reason?: string) => {
-    e.preventDefault();
+  const {user}= useContext<UserContextType|null>(UserContext) || {user:null, resetUser:()=>{}};
+  
+  useEffect(() => { 
+    if (user) {
+      setCurrentUser(user);
+    } else {
+      setCurrentUser(null);
+    }
+  }, [user]);
+
+
+
+  const handleClose = ( reason?: string) => {
     if (reason && reason == "backdropClick") {
       return;
     }
@@ -38,68 +40,13 @@ function NavBar(props: Props) {
     setOpen(true);
   };
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-  const drawer = (
-    <Box sx={{ textAlign: "center" }}>
-      <Box component="div" sx={{ display: "flex", justifyContent: "flex-end" }}>
-        {/* <Logo sx={{ fontSize: 40, ml: 2 }} /> */}
-        <IconButton
-          onClick={handleDrawerToggle}
-          sx={{ color: "secondary.main" }}
-        >
-          <MenuOpenIcon />
-        </IconButton>
-      </Box>
-      <Divider sx={{ mt: 3 }} />
-      <Stack direction="column" sx={{ textAlign: "start" }}>
-        {user && user.role == Role.admin
-          ? navItems.map((item, index) => (
-              <Button
-                key={`${item}-${index}`}
-                sx={{
-                  backgroundColor:
-                    location.pathname === item.to ? "black" : "transparent",
-                  color: "",
-                  justifyContent: "flex-start",
-                  pl: 3,
-                  height: "100%",
-                  borderRadius: "inherit",
-                  "&:hover": { backgroundColor: "grey" },
-                }}
-              >
-                {item.title}
-              </Button>
-            ))
-          : navItems
-              .filter((item) => item.title !== "Dashboard")
-              .map((item, index) => (
-                <Button
-                  key={`${item}-${index}`}
-                  sx={{
-                    backgroundColor:
-                      location.pathname === item.to ? "black" : "transparent",
-                    color: "",
-                    justifyContent: "flex-start",
-                    pl: 3,
-                    height: "100%",
-                    borderRadius: "inherit",
-                    "&:hover": { backgroundColor: "grey" },
-                  }}
-                >
-                  {item.title}
-                </Button>
-              ))}
-      </Stack>
-    </Box>
-  );
-  const container = window !== undefined ? window().document.body : undefined;
+  const handleUserButtonClick = () => {
+    setOpen(true)
+  }
 
   return (
     <Box>
-      <Box component="nav" sx={{ marginInline: "auto", p: "8px 15px" }}>
+      <Box component="nav" sx={(theme) => ({ padding: theme.spacing(1, 2) })}>
         <Box
           sx={{
             display: "flex",
@@ -113,95 +60,30 @@ function NavBar(props: Props) {
             open={open}
             closeWithX={closeWithX}
           />
-          {mobileOpen ? null : (
-            <IconButton
-              onClick={handleDrawerToggle}
-              sx={{
-                mr: 2,
-                display: { md: "none", sm: "none", lg: "none" },
-                color: "secondary.main",
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+        </Box>
+        <Box
+          sx={(theme) => ({
+            display: "flex",
+            gap: theme.spacing(2),
+            justifyContent: "flex-end",
+            padding: theme.spacing(1, 2),
+          })}
+        >
+          {currentUser ? (
+            <NavigationLink to="/dashboard">
+              <Box
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                {currentUser.user_name.charAt(0).toUpperCase() +
+                  currentUser.user_name.substring(1)}
+              </Box>
+            </NavigationLink>
+          ) : (
+            <UserButton handleClick={handleUserButtonClick} />
           )}
-
-          <Box
-            sx={{
-              display: { xs: "none", sm: "flex" },
-              justifyContent: { sm: "center" },
-              alignItems: { sm: "center" },
-              backgroundColor: "transparent",
-              height: "40px",
-              width: "fit-content",
-              gap: "10px",
-              minWidth: "70%",
-            }}
-          >
-            {user && user.role == Role.admin
-              ? navItems.map((item, index) => (
-                  <Button
-                    key={`${item}-${index}`}
-                    sx={{
-                      backgroundColor:
-                        location.pathname === item.to ? "black" : "transparent",
-                      color: "",
-                      justifyContent: "flex-start",
-                      pl: 3,
-                      height: "100%",
-                      borderRadius: "inherit",
-                      "&:hover": { backgroundColor: "grey" },
-                    }}
-                  >
-                    {item.title}
-                  </Button>
-                ))
-              : navItems
-                  .filter((item) => item.title !== "Dashboard")
-                  .map((item, index) => (
-                    <Button
-                      key={`${item}-${index}`}
-                      sx={{
-                        color:
-                          location.pathname === item.to
-                            ? "black"
-                            : "transparent",
-                        justifyContent: "flex-start",
-                        pl: 3,
-                        height: "100%",
-                        borderRadius: "inherit",
-                      }}
-                    >
-                      {item.title}
-                    </Button>
-                  ))}
-          </Box>
-
-          <Drawer
-            container={container}
-            hideBackdrop
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{
-              keepMounted: true,
-            }}
-            sx={{
-              display: { xs: "block", sm: "none", md: "none", lg: "none" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-                backgroundColor: "rgba(255,255,255,0.2)",
-                backdropFilter: "blur(10px)",
-              },
-            }}
-          >
-            {drawer}
-          </Drawer>
-          <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
-            {user && <UserButton />}
-            <ThemeToggler />
-          </Box>
+          <ThemeToggler />
         </Box>
       </Box>
     </Box>

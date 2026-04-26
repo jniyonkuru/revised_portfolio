@@ -1,5 +1,5 @@
-import HomePage from "./components/pages/HomePage";
-import Dashboard from "./components/pages/Dashboard";
+//third party packages
+
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import generateTheme from "../theme";
@@ -13,6 +13,9 @@ import ExperienceTab from "./components/experiences/ExperienceTab";
 import ProjectsTab from "./components/projects/ProjectsTab";
 import AboutTab from "./components/about/AboutTab";
 import ContactTab from "./components/contact/ContactTab";
+import HomePage from "./components/pages/HomePage";
+import Dashboard from "./components/pages/Dashboard";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   const { theme } = useThemeContext();
@@ -21,7 +24,7 @@ function App() {
       <UserProvider>
         <Routes>
           <Route element={<HomePage />} path="/">
-            <Route index element={<ProjectsTab />}></Route>
+            <Route index element={<ProjectsTab />}/>
             <Route
               path="/experience"
               element={
@@ -30,10 +33,12 @@ function App() {
                 </Suspense>
               }
             ></Route>
-            <Route path="/about" element={<AboutTab />}></Route>
-            <Route path="/contact" element={<ContactTab />}></Route>
+            <Route path="/about" element={<AboutTab />}/>
+            <Route path="/contact" element={<ContactTab />}/>
           </Route>
-          <Route element={<Dashboard />} path="/dashboard"></Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route element={<Dashboard />} path="/dashboard"/>
+          </Route>
         </Routes>
       </UserProvider>
     </ThemeProvider>

@@ -1,4 +1,4 @@
-// third party packages 
+// third party packages
 import React from "react";
 import BusinessCenter from "@mui/icons-material/BusinessCenter";
 import { Box, Typography } from "@mui/material";
@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material";
 //local Packages
 import Experiences from "./Experiences";
 import useExperience from "../../ hooks/experiences";
-
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const ExperienceTab: React.FC = () => {
   const {
@@ -30,11 +30,13 @@ const ExperienceTab: React.FC = () => {
       >
         Experiences
       </Typography>
-      <Experiences
-        experiences={experinces}
-        isError={isExperienceError}
-        isLoading={experiencesLoading}
-      ></Experiences>
+      <ErrorBoundary>
+        <Experiences
+          experiences={experinces}
+          isError={isExperienceError}
+          isLoading={experiencesLoading}
+        />
+      </ErrorBoundary>
     </Box>
   );
 };

@@ -5,6 +5,7 @@ import React from "react";
 import ExperienceTimeline from "./ExperienceTimeline";
 import { Experience } from "../../types";
 import { Typography } from "@mui/material";
+import Spinner from "../Spinner";
 
 interface Props {
   experiences: Experience[] | undefined;
@@ -12,7 +13,10 @@ interface Props {
   isError: boolean;
 }
 
-const Experiences: React.FC<Props> = ({ experiences, isError }: Props) => {
+const Experiences: React.FC<Props> = ({ experiences, isError,isLoading }: Props) => {
+  if (isLoading) {
+    return(<Spinner/>)
+  }
   if (isError) {
     return <Typography color="error">Error</Typography>;
   }

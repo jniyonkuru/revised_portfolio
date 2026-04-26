@@ -1,14 +1,24 @@
-//third party packages
-import CircularProgress from '@mui/material/CircularProgress';
-import React from 'react';
-// import { useTheme } from '@mui/material/styles';
+// third party packages
+import { RotatingLines } from "react-loader-spinner";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material";
 
+//local packages
 
-const Spinner: React.FC = () => {
-    // const theme=useTheme()
-    return (
-        <CircularProgress color="primary" size={50} />
-    )
+function Spinner() {
+  const theme = useTheme();
+
+  return (
+    <Box>
+      <RotatingLines
+        height="32"
+        width="32"
+        visible={true}
+        color={theme.palette.primary.main}
+        strokeWidth="3"
+      />
+    </Box>
+  );
 }
 
-export default Spinner
+export default Spinner;

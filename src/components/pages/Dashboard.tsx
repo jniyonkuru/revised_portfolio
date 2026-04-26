@@ -1,59 +1,136 @@
-import { Box } from "@mui/material";
-import Navbar from "../Navbar";
-import UserDetails from "../UserDetails";
-import BigButton from "../BigButton";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Divider, Typography, IconButton } from "@mui/material";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import { useNavigate } from "react-router-dom";
+
+//local packages
+import NavList from "../dashboard/navigationlist";
+import ProjectList from "../dashboard/projectslist";
+import PrimaryTitle from "../dashboard/PrimaryTitle";
+import ExperiencesList from "../dashboard/ExperiencesList";
+import { useContext } from "react";
+import { UserContext } from "../../UserContext";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const { resetUser } = useContext(UserContext) || {
+    user: null,
+    resetUser: () => {},
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    resetUser();
+    navigate("/");
+  };
   return (
     <Box
-      sx={{
-        width: "100%",
-        position: "relative",
+      sx={(theme) => ({
+        backgroundColor: theme.palette.primary.main,
+        padding: theme.spacing(2),
         height: "100vh",
-        background: "linear-gradient(90deg,#e2e5e6,#fce8b5)",
-      }}
+        display: "flex",
+        flexDirection: "column",
+      })}
     >
-      <Box component="header" sx={{ position: "sticky", boxShadow: 8 }}>
-        <Navbar />
-      </Box>
       <Box
         component="main"
-        sx={{
+        sx={(theme) => ({
           display: "flex",
-          width: "100%",
-          justifyContent: "space-between",
-          padding: 2,
-        }}
+          flex: 1,
+          gap: theme.spacing(2),
+        })}
       >
-        <Box component="section" id="section1" sx={{ width: "40%" }}>
-          <UserDetails />
-        </Box>
         <Box
           component="section"
-          id="section2"
-          sx={{ display: "flex", flexDirection: { md: "column" }, flex: 1 }}
+          sx={(theme) => ({
+            width: "200px",
+            display: "flex",
+            flexDirection: "column",
+            padding: theme.spacing(1),
+            backgroundColor: theme.palette.background.default,
+            borderRadius: theme.shape.borderRadius,
+          })}
         >
-          <BigButton
-            Icon={AddIcon}
-            clickHandler={() => console.log("clicked")}
-            text="Add new Project"
-            backgroundColor="#FF9B2F"
-          />
-          <BigButton
-            Icon={AddIcon}
-            clickHandler={() => console.log("clicked")}
-            text="Add new Project"
-            backgroundColor="#5BBCFF"
-          />
-          <BigButton
-            Icon={AddIcon}
-            clickHandler={() => console.log("clicked")}
-            text="Add Experience"
-            backgroundColor="#8AA624"
-          />
+          <Box sx={() => ({ flex: 1 })}>
+            <NavList />
+            <Divider
+              sx={{
+                boxShadow: "0px 0.5px 0px rgba(255, 255, 255, 0.5)",
+                my: 2,
+              }}
+            />
+          </Box>
+          <Box
+            sx={(theme) => ({
+              padding: theme.spacing(1),
+              display: "flex",
+              gap: theme.spacing(1),
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: theme.shape.borderRadius,
+              color: theme.palette.text.primary,
+            })}
+          >
+            <Typography>Log out</Typography>
+            <IconButton onClick={handleLogout}>
+              <ExitToAppOutlinedIcon fontSize="medium" />
+            </IconButton>
+          </Box>
         </Box>
-        <Box></Box>
+        <Box
+          sx={(theme) => ({
+            flex: 1,
+            display: "flex",
+            gap: theme.spacing(2),
+          })}
+        >
+          <Box
+            sx={(theme) => ({
+              borderRadius: theme.shape.borderRadius,
+              backgroundColor: theme.palette.background.default,
+              overflow: "auto",
+              maxHeight: "95vh",
+              padding: theme.spacing(1, 2),
+              flex: 1,
+            })}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={(theme) => ({
+                fontWeight: theme.typography.fontWeightBold,
+                textAlign: "center",
+              })}
+            >
+              <Box sx={{ position: "sticky", top: 0 }}>
+                <PrimaryTitle>Projects</PrimaryTitle>
+              </Box>
+            </Typography>
+            <ErrorBoundary>
+              <ProjectList />
+            </ErrorBoundary>
+          </Box>
+          <Box
+            sx={(theme) => ({
+              borderRadius: theme.shape.borderRadius,
+              backgroundColor: theme.palette.background.default,
+              flex: 1,
+              padding: theme.spacing(1, 2),
+              maxHeight: "95vh",
+              overflow: "auto",
+              position: "relative",
+            })}
+          >
+            <Box sx={{ position: "sticky", top: 0 }}>
+              <PrimaryTitle>Experiences</PrimaryTitle>
+            </Box>
+            <ErrorBoundary>
+              <ExperiencesList />
+            </ErrorBoundary>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

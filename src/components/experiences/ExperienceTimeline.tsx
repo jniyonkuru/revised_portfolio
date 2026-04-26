@@ -55,7 +55,7 @@ function ExperienceTimeline({ experience }: Props) {
                   {experience.role}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ color: "grey.500" }}>
-                  {`${formatDateTime(experience.start_date)} -- ${formatDateTime(experience.end_date || "Current")}`}
+                  {`${formatDateTime(experience.start_date)} - ${experience.end_date ? formatDateTime(experience.end_date) : "Present"}`}
                 </Typography>
               </Box>
               <Box>

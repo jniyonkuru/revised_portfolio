@@ -4,19 +4,21 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material";
 
+
 const SytledNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
+  fontSize: "12px",
+  fontWeight: theme.typography.fontWeightLight,
+  padding: theme.spacing(1,2),
   color: theme.palette.text.primary,
-  padding: theme.spacing(1),
   borderRadius: theme.shape.borderRadius,
-  transition: theme.transitions.create(["background-color", "color"]),
+  transition: theme.transitions.create(["background-color", "color"],{duration:theme.transitions.duration.standard,easing:'linear'}),
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
   "&.active": {
     color: theme.palette.text.primary,
-    backgroundColor: theme.palette.primary.light + "20",
-    fontWeight: "bold",
+    backgroundColor: theme.palette.primary.main ,
   },
 }));
 
@@ -27,7 +29,7 @@ interface Props {
 
 const NavigationLink: React.FC<Props> = ({ to, children }: Props) => {
   return (
-    <SytledNavLink to={to} style={{ textDecoration: "" }}>
+    <SytledNavLink to={to}>
       {children}
     </SytledNavLink>
   );

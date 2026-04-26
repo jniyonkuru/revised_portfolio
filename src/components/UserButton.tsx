@@ -1,12 +1,28 @@
-import { IconButton} from "@mui/material";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { IconButton } from "@mui/material";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-function UserButton() {
-  return (
-    <IconButton sx={{boxShadow:1, background:"white" ,'&:hover':{background:"#EEEEEE" ,transform:"scale(1.05)", transition:"transform 0.5s ease-in-out"}}}>
-     <PersonOutlineIcon fontSize="small" sx={{color:'black'}}/>
-    </IconButton>
-  )
+interface Props {
+  handleClick: () => void;
 }
 
-export default UserButton
+function UserButton({ handleClick }: Props) {
+  return (
+    <IconButton
+      sx={(theme) => ({
+        "&:hover": {
+          background: theme.palette.background + "20",
+          transform: "scale(1.01)",
+          transition: "transform 0.5s ease-in-out",
+        },
+      })}
+      onClick={handleClick}
+    >
+      <PersonOutlineIcon
+        fontSize="small"
+        sx={(theme) => ({ color: theme.palette.text.primary })}
+      />
+    </IconButton>
+  );
+}
+
+export default UserButton;

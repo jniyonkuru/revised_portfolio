@@ -2,7 +2,7 @@
 import Navbar from "../Navbar";
 import HomeSummaryNote from "../HomeSummaryNote";
 import HomeImage from "../ProfileImage";
-import { Box, Stack, Divider } from "@mui/material";
+import { Box, Stack, Divider, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 //local packages
@@ -18,6 +18,7 @@ function HomePage() {
         padding: 2,
         display: "flex",
         flexDirection: "column",
+        color:theme.palette.text.primary
       }}
     >
       <Box
@@ -25,8 +26,9 @@ function HomePage() {
         sx={{
           background: `linear-gradient(90deg, ${theme.palette.primary.light} , ${theme.palette.primary.main})`,
           width: "100%",
-          height: "70px",
+          padding:theme.spacing(1,2),
           borderRadius: 2,
+          
         }}
       >
         <Navbar />
@@ -62,7 +64,7 @@ function HomePage() {
           <Box>
             <Stack
               direction="row"
-              spacing={2}
+              spacing={1}
               sx={(theme) => ({ padding: theme.spacing(1) })}
             >
               <NavigationLink to="/">Projects</NavigationLink>
@@ -75,9 +77,16 @@ function HomePage() {
             sx={{ boxShadow: "0px 0.5px 0px rgba(255, 255, 255, 0.5)", my: 1 }}
           />
         </Box>
-
         <Box sx={{ padding: 2 }}>
           <Outlet />
+        </Box>
+        <Box
+          sx={{ position: "absolute", bottom:theme.spacing(1), padding: theme.spacing(2),left:theme.spacing(2) ,right:theme.spacing(2),borderRadius:theme.shape.borderRadius, textAlign:'center' }}
+        >
+          <Divider
+            sx={{ boxShadow: "0px 0.5px 0px rgba(255, 255, 255, 0.5)", my: 1 }}
+          />
+          <Typography  variant="body1" component="p">&copy; Jacques 2026</Typography>
         </Box>
       </Box>
     </Box>

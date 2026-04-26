@@ -15,8 +15,9 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [theme, setTheme] = React.useState<ThemeType>("light");
+  const [theme, setTheme] = React.useState<ThemeType>(localStorage.getItem("theme") as ThemeType || "light");
   const toggleTheme = () => {
+     localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
     return setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 

@@ -1,4 +1,4 @@
-import DarkModeIcon from "@mui/icons-material/DarkMode";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { IconButton } from "@mui/material";
 import { useThemeContext } from "../themeContext";
@@ -8,17 +8,24 @@ function ThemeToggler() {
 
   return (
     <IconButton
-      sx={{
-        boxShadow: 1,
-        background: "white",
-        "&:hover": { background: "#EEEEEE" },
-      }}
+      sx={(theme) => ({
+        color: theme.palette.text.primary,
+        transition: theme.transitions.create(["background", "transform"], {
+          duration: theme.transitions.duration.standard,
+          delay: 0,
+          easing: "linear",
+        }),
+        "&:hover": {
+          background: theme.palette.background + "20",
+          transform: "scale(1.01)",
+        },
+      })}
       onClick={toggleTheme}
     >
       {theme === "light" ? (
-        <DarkModeIcon fontSize="small" color="secondary" />
+        <DarkModeOutlinedIcon fontSize="small" />
       ) : (
-        <LightModeIcon fontSize="small" sx={{ color: "background.default" }} />
+        <LightModeIcon fontSize="small" />
       )}
     </IconButton>
   );

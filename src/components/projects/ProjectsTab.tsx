@@ -7,6 +7,7 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 
 //local packages 
 import ProjectsCards from "./ProjectsCards";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const ProjectsTab: React.FC = () => {
     return (<Box>
@@ -28,8 +29,10 @@ const ProjectsTab: React.FC = () => {
                   Projects
                 </Typography>
               </Box>
-        </Box>
-        <ProjectsCards/>
+      </Box>
+      <ErrorBoundary>
+        <ProjectsCards />
+        </ErrorBoundary>
         </Box>)
 }
 
