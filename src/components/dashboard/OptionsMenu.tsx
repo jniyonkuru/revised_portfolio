@@ -1,5 +1,6 @@
 //third party packages
-import { Box, Menu, MenuItem } from "@mui/material";
+import { ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -10,37 +11,62 @@ interface Props {
   id: number;
 }
 function OptionsMenu({ anchorEl, open, onClose, onEdit, onDelete, id }: Props) {
-  function handleEdit(id: number) {
+  const handleEdit = () => {
     onEdit(id);
     onClose();
-  }
+  };
 
-  function handleDelete(id: number) {
+  const handleDelete = () => {
     onDelete(id);
     onClose();
-  }
+  };
   return (
-    <Box sx={(theme) => ({ padding: theme.spacing(1, 2) })}>
-      <Menu
-        open={open}
-        onClose={onClose}
-        anchorEl={anchorEl}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: (theme) => ({
-              boxShadow: ` 0 0 1px ${theme.palette.secondary.contrastText}`,
-              borderColor: theme.palette.secondary.contrastText,
-              backgroundColor: theme.palette.background.default,
-              borderRadius: theme.shape.borderRadius,
-            }),
-          },
-        }}
+    <Menu
+      open={open}
+      onClose={onClose}
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      slotProps={{
+        paper: {
+          elevation: 6,
+          sx: (theme) => ({
+            mt: 0.5,
+            minWidth: 160,
+            borderRadius: 2,
+            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.paper,
+            "& .MuiMenuItem-root": {
+              gap: 1,
+              mx: 0.5,
+              my: 0.25,
+              borderRadius: 1,
+              fontSize: theme.typography.body2.fontSize,
+            },
+            "& .MuiListItemIcon-root": {
+              minWidth: 0,
+              color: "inherit",
+            },
+          }),
+        },
+      }}
+    >
+      <MenuItem onClick={handleEdit}>
+        <ListItemIcon>
+          <Pencil size={16} />
+        </ListItemIcon>
+        Edit
+      </MenuItem>
+      <MenuItem
+        onClick={handleDelete}
+        sx={(theme) => ({ color: theme.palette.error.main })}
       >
-        <MenuItem onClick={() => handleEdit(id)}>Edit</MenuItem>
-        <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
-      </Menu>
-    </Box>
+        <ListItemIcon>
+          <Trash2 size={16} />
+        </ListItemIcon>
+        Delete
+      </MenuItem>
+    </Menu>
   );
 }
 

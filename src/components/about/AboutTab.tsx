@@ -1,27 +1,19 @@
 import React from "react";
 //third party packages
 import { Box, Typography } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
+import { User } from "lucide-react";
+
+//local packages
+import SectionHeader from "../SectionHeader";
 
 const AboutTab: React.FC = () => {
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <PersonIcon sx={{ color: "text.primary", fontSize: "30px" }} />
-        <Typography
-          component="span"
-          variant="h5"
-          sx={{
-            color: "text.primary",
-            textAlign: "center",
-            ml: 2,
-            fontWeight: "bold",
-          }}
-        >
-          About me
-        </Typography>
-      </Box>
-      <Typography component="p" sx={{ color: "text.primary", m: 2 }}>
+      <SectionHeader icon={User} title="About me" />
+      <Typography
+        component="p"
+        sx={{ color: "text.secondary", m: 2, maxWidth: "65ch", lineHeight: 1.7 }}
+      >
         I’m Jacques Niyonkuru, an aspiring software engineer passionate about
         building scalable and user-friendly web applications. With a strong
         foundation in JavaScript, React, Node.js, PostgreSQL, MongoDB, and

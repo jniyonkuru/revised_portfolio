@@ -1,6 +1,6 @@
 //third party packages
-import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import { Box, Divider, ListItem, Stack, Typography } from "@mui/material";
+import { CalendarDays, ChevronRight } from "lucide-react";
 import React from "react";
 
 //local packages
@@ -8,6 +8,7 @@ import React from "react";
 import OptionsMenu from "./OptionsMenu";
 import MoreButton from "./MoreButton";
 import { formatDateTime } from "../../utils/formatDates";
+import { listItemCardSx } from "./listItemCard";
 
 interface Experience {
   id: number;
@@ -35,63 +36,48 @@ function ExperienceItem({ experience, onDelete, onEdit }: Props) {
         setAnchorEl(e.currentTarget)
     }
   return (
-    <ListItem
-      sx={(theme) => ({
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        boxShadow: ` 0 0 1px ${theme.palette.secondary.contrastText}`,
-        borderRadius: theme.shape.borderRadius,
-      })}
-    >
-      <ListItemText
-        primary={
-          <Box>
-            <Typography
-              sx={(theme) => ({
-                fontWeight: theme.typography.fontWeightBold,
-                color: theme.palette.text.primary,
-              })}
-              variant="h5"
-            >
-              {experience.organization}
-            </Typography>
-          </Box>
-        }
-        secondary={
-          <Box sx={(theme) => ({ padding: theme.spacing(1, 3) })}>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              {experience.role}
-            </Typography>
-            <Typography
-              px={2}
-              variant="body2"
-            >{`${formatDateTime(experience.start_date)} - ${formatDateTime(experience.end_date!) || "Present"}`}</Typography>
-          </Box>
-        }
-      />
-      <Box sx={{ display: "flex", position: "relative", width: "100%" }}>
-        <Box>
+    <ListItem sx={listItemCardSx}>
+      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
-            variant="body1"
+            variant="h6"
             sx={(theme) => ({
+              lineHeight: 1.2,
               fontWeight: theme.typography.fontWeightBold,
               color: theme.palette.text.primary,
-              ml: 2,
             })}
           >
-            Tasks
+            {experience.organization}
           </Typography>
-          <List sx={(theme) => ({ padding: theme.spacing(1, 3) })}>
-            {experience.tasks.map((item) => (
-              <ListItem disablePadding key={experience.id}>
-                <CheckIcon fontSize="small" />
-                {<ListItemText secondary={item} />}
-              </ListItem>
-            ))}
-          </List>
+          <Typography
+            variant="subtitle2"
+            sx={(theme) => ({
+              fontWeight: theme.typography.fontWeightMedium,
+              color: theme.palette.secondary.main,
+            })}
+          >
+            {experience.role}
+          </Typography>
+          <Box
+            sx={(theme) => ({
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              mt: 0.5,
+              color: theme.palette.text.disabled,
+            })}
+          >
+            <Box component={CalendarDays} size={14} sx={{ flexShrink: 0 }} />
+            <Typography variant="caption">
+              {`${formatDateTime(experience.start_date)} — ${
+                experience.end_date
+                  ? formatDateTime(experience.end_date)
+                  : "Present"
+              }`}
+            </Typography>
+          </Box>
         </Box>
-        <Box sx={{ position: "absolute", right: 0, bottom: 0 }}>
+        <Box sx={{ flexShrink: 0, mt: -0.5, mr: -0.5 }}>
           <MoreButton handleClick={handleClick} />
           <OptionsMenu
             id={experience.id}
@@ -103,6 +89,43 @@ function ExperienceItem({ experience, onDelete, onEdit }: Props) {
           />
         </Box>
       </Box>
+      {experience.tasks.length > 0 && (
+        <>
+          <Divider />
+          <Box>
+            <Typography
+              variant="overline"
+              sx={(theme) => ({
+                color: theme.palette.text.secondary,
+                letterSpacing: "0.08em",
+              })}
+            >
+              Tasks
+            </Typography>
+            <Stack spacing={0.75} sx={{ mt: 0.5 }}>
+              {experience.tasks.map((item, index) => (
+                <Box
+                  key={`${experience.id}-task-${index}`}
+                  sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}
+                >
+                  <Box
+                    component={ChevronRight}
+                    size={16}
+                    sx={(theme) => ({
+                      mt: "3px",
+                      flexShrink: 0,
+                      color: theme.palette.secondary.main,
+                    })}
+                  />
+                  <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
+                    {item}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+        </>
+      )}
     </ListItem>
   );
 }

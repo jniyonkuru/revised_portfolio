@@ -1,5 +1,4 @@
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import LightModeIcon from "@mui/icons-material/LightMode";
+import { Moon, Sun } from "lucide-react";
 import { IconButton } from "@mui/material";
 import { useThemeContext } from "../themeContext";
 
@@ -22,11 +21,7 @@ function ThemeToggler() {
       })}
       onClick={toggleTheme}
     >
-      {theme === "light" ? (
-        <DarkModeOutlinedIcon fontSize="small" />
-      ) : (
-        <LightModeIcon fontSize="small" />
-      )}
+      {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
     </IconButton>
   );
 }

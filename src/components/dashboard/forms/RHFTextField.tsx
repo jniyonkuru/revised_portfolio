@@ -1,17 +1,24 @@
-import { Controller } from "react-hook-form";
-import { TextField } from "@mui/material";
+import {
+  Controller,
+  Control,
+  FieldValues,
+  Path,
+  RegisterOptions,
+} from 'react-hook-form';
+import { TextField } from '@mui/material';
 
-interface Props {
-  name: string;
-  control: any;
+interface Props<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
   label: string;
   helperText?: string;
-  rules?: any;
+  rules?: RegisterOptions<T, Path<T>>;
   multiline?: boolean;
   rows?: number;
+  type?: string;
 }
 
-export default function RHFTextField({
+export default function RHFTextField<T extends FieldValues>({
   name,
   control,
   label,
@@ -19,7 +26,8 @@ export default function RHFTextField({
   rules,
   multiline,
   rows,
-}: Props) {
+  type,
+}: Props<T>) {
   return (
     <Controller
       name={name}
@@ -28,6 +36,7 @@ export default function RHFTextField({
       render={({ field, fieldState }) => (
         <TextField
           {...field}
+          type={type}
           label={label}
           multiline={multiline}
           rows={rows}
@@ -35,6 +44,10 @@ export default function RHFTextField({
           size="small"
           error={!!fieldState.error}
           helperText={fieldState.error?.message || helperText}
+          // Date inputs always show a value, so keep the label shrunk.
+          slotProps={
+            type === 'date' ? { inputLabel: { shrink: true } } : undefined
+          }
         />
       )}
     />

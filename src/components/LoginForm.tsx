@@ -11,8 +11,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { X, Eye, EyeOff } from "lucide-react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -38,15 +37,18 @@ const generateSytle = (theme: Theme) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
-    bgcolor: theme.palette.background.default,
+    bgcolor: theme.palette.background.paper,
     padding: 4,
     outline: 0,
-    borderRadius: "5px",
+    borderRadius: 2,
+    border: `1px solid ${theme.palette.divider}`,
+    boxShadow: theme.shadows[6],
     color: theme.palette.text.primary,
     "& .MuiOutlinedInput-root": {
+      borderRadius: 12,
+      color: theme.palette.text.primary,
       "& fieldset": {
         borderColor: theme.palette.secondary.contrastText,
-        borderRadius: theme.shape.borderRadius,
       },
       "&:hover fieldset": {
         borderColor: theme.palette.secondary.contrastText,
@@ -56,11 +58,18 @@ const generateSytle = (theme: Theme) => {
       },
     },
     "& .MuiInputLabel-root": {
-      color: theme.palette.text.primary,
+      color: theme.palette.text.secondary,
+      "&.Mui-focused": {
+        color: theme.palette.text.primary,
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: theme.palette.error.main,
     },
     "& input:-webkit-autofill": {
-      WebkitBoxShadow: "0 0 0 1000px white inset",
-      WebkitTextFillColor: "#000000",
+      WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.default} inset`,
+      WebkitTextFillColor: theme.palette.text.primary,
+      caretColor: theme.palette.text.primary,
       transition: "background-color 5000s ease-in-out 0s",
     },
   };
@@ -118,7 +127,7 @@ const LoginForm = ({ open, handleClose, closeWithX }: Props) => {
           sx={{ position: "absolute", top: 2, right: 2 }}
           onClick={closeWithX}
         >
-          <ClearIcon fontSize="small"></ClearIcon>
+          <X size={20} />
         </IconButton>
         <Typography>Login</Typography>
         <Controller
@@ -158,9 +167,9 @@ const LoginForm = ({ open, handleClose, closeWithX }: Props) => {
                     <InputAdornment position="end">
                       <IconButton onClick={handleShowPassword}>
                         {showPassword ? (
-                          <VisibilityOff fontSize="small" />
+                          <EyeOff size={20} />
                         ) : (
-                          <Visibility fontSize="small" />
+                          <Eye size={20} />
                         )}
                       </IconButton>
                     </InputAdornment>
@@ -172,7 +181,24 @@ const LoginForm = ({ open, handleClose, closeWithX }: Props) => {
         />
 
         <Button
-          sx={{ backgroundColor: "primary.light", mt: 1,color:"text.primary" }}
+          fullWidth
+          variant="contained"
+          sx={(theme) => ({
+            mt: 2,
+            borderRadius: "12px",
+            py: 1,
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.text.primary,
+            boxShadow: "none",
+            "&:hover": {
+              backgroundColor: theme.palette.primary.main,
+              boxShadow: "none",
+            },
+            "&.Mui-disabled": {
+              backgroundColor: theme.palette.action.disabledBackground,
+              color: theme.palette.text.disabled,
+            },
+          })}
           type="submit"
           disabled={isPending || isSubmitting}
         >

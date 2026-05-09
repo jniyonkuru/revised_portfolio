@@ -42,6 +42,22 @@ const updateExperience = async (experience: Omit<Experience, "created_at" | "upd
   return data;
 };
 
+const deleteExperience = async (experienceId: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  if (!experienceId) {
+    throw new Error("Experience Id is required");
+  }
+  const { data } = await api.delete(`/experiences/${experienceId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return data;
+};
+
 const useUpdateExperience = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -62,6 +78,16 @@ const useUpdateExperience = () => {
     });
   };
 
-export { useExperiences,useAddExperience ,useUpdateExperience};
+const useDeleteExperience = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteExperience,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Experiences"] });
+    },
+  });
+};
+
+export { useExperiences,useAddExperience ,useUpdateExperience, useDeleteExperience};
 
 export default useExperiences;

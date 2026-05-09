@@ -1,12 +1,13 @@
 // third party packages
 import React from "react";
-import BusinessCenter from "@mui/icons-material/BusinessCenter";
-import { Box, Typography } from "@mui/material";
+import { Briefcase } from "lucide-react";
+import { Box } from "@mui/material";
 
 //local Packages
 import Experiences from "./Experiences";
 import useExperience from "../../ hooks/experiences";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import SectionHeader from "../SectionHeader";
 
 const ExperienceTab: React.FC = () => {
   const {
@@ -17,19 +18,7 @@ const ExperienceTab: React.FC = () => {
 
   return (
     <Box>
-      <BusinessCenter sx={{ color: "text.primary", fontSize: "30px" }} />
-      <Typography
-        component="span"
-        variant="h5"
-        sx={{
-          color: "text.primary",
-          textAlign: "center",
-          ml: 2,
-          fontWeight: "bold",
-        }}
-      >
-        Experiences
-      </Typography>
+      <SectionHeader icon={Briefcase} title="Experiences" />
       <ErrorBoundary>
         <Experiences
           experiences={experinces}

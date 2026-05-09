@@ -1,33 +1,33 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import CustomButton from "../CustomButton";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import DescriptionIcon from "@mui/icons-material/Description";
+import { Link, Mail, FileText } from "lucide-react";
 
 function ContactAddress() {
   return (
-    <Box sx={{ color: "black" }}>
+    <Box>
       <Typography sx={{ my: 2, color: "text.primary" }}>
         Let's connect and bring your projects to life.
       </Typography>
 
-      <Box>
+      <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
         <CustomButton
           text="LinkedIn"
           href="https://www.linkedin.com/in/jacques-niyonkuru-55b12b180/"
-          Icon={MailOutlineIcon}
+          external
+          icon={<Link size={18} />}
         />
         <CustomButton
           href="mailto:niyonkurujacques@gmail.com"
           text="Email"
-          Icon={MailOutlineIcon}
+          icon={<Mail size={18} />}
         />
         <CustomButton
           href="/Jacques_Resume.pdf"
           other={{ download: "Resume.pdf" }}
           text="Resume"
-          Icon={DescriptionIcon}
+          icon={<FileText size={18} />}
         />
-      </Box>
+      </Stack>
     </Box>
   );
 }

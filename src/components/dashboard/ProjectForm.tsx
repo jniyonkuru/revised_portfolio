@@ -1,233 +1,240 @@
-// third part packages
-import {
-  Box,
-  TextField,
-  Typography,
-  Modal,
-  Backdrop,
-  Button,
-} from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+// third party packages
+import { Box, Button, Modal, Backdrop, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 //local packages
-import { Project } from "../../types";
-import { useEffect } from "react";
-import { useUpdateProject } from "../../ hooks/projects";
+import { ProjectFormSchema } from '../../types';
+import type { ProjectFormValues } from '../../types';
+import {
+  useReadProject,
+  useAddProject,
+  useUpdateProject,
+} from '../../ hooks/projects';
+import ProjectFormContainer from './forms/ProjectFormContainer';
+import RHFTextField from './forms/RHFTextField';
+import ImageInput from './forms/ImageInput';
+import ProjectImage from './forms/ProjectImage';
 
 interface Props {
   open: boolean;
-  project?: Project;
   setOpen: (open: boolean) => void;
+  // When a projectId is provided the form edits that project; otherwise it
+  // creates a new one.
+  projectId?: number | null;
 }
 
-function ProjectForm({ open, project, setOpen }: Props) {
+function ProjectForm({ open, setOpen, projectId }: Props) {
+  const isEdit = projectId != null;
+
+  const { data: project } = useReadProject({ projectId });
+
+  // Map the API project (tags: string[]) onto the form shape (tags: string).
+  const formValues = useMemo<ProjectFormValues | undefined>(() => {
+    if (!project) return undefined;
+    return {
+      title: project.title,
+      github_url: project.github_url,
+      description: project.description,
+      tags: project.tags.join(', '),
+      image: project.image,
+    };
+  }, [project]);
+
   const {
     control,
     handleSubmit,
     reset,
-    formState: { dirtyFields },
-  } = useForm<Project>();
-  const {
-    mutate: updateProject,
-    isError,
-    isPending,
-  } = useUpdateProject();
-  const [disable, setDisable] = useState(false);
+    formState: { errors, isValid, dirtyFields },
+  } = useForm<ProjectFormValues>({
+    mode: 'onChange',
+    values: formValues,
+    defaultValues: {
+      title: '',
+      description: '',
+      github_url: '',
+      tags: '',
+    },
+    resolver: zodResolver(ProjectFormSchema),
+  });
 
+  const { mutate: addProject, isPending: isAdding } = useAddProject();
+  const { mutate: updateProject, isPending: isUpdating } = useUpdateProject();
+  const isPending = isAdding || isUpdating;
+
+  const [imageUrl, setImageUrl] = useState('');
+
+  // Seed the preview with the existing image when editing.
   useEffect(() => {
-    if (project) {
-      reset(project);
+    if (project && typeof project.image === 'string') {
+      setImageUrl(project.image);
     }
-  }, [project, reset]);
+  }, [project]);
 
-  const onSubmit = (data: any) => {
-    const { created_at, updated_at, user_id, ...rest } = data;
-    let updatedProject = Object.keys(dirtyFields).includes("tags")
-      ? { ...rest, tags: rest.tags.split(",") }
-      : rest;
-    updateProject(updatedProject as Project);
-    if (!isError && !isPending) {
-      reset();
-      setOpen(false);
+  const handleClose = () => {
+    // Revoke only blob: previews we created; revoking a remote URL is harmless.
+    if (imageUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(imageUrl);
     }
-    if (isError) {
-      alert("An error occurred while updating the project. Please try again.");
-      reset(project);
-    }
-    if (isPending) {
-      setDisable(true);
+    setImageUrl('');
+    setOpen(false);
+  };
+
+  const buildFormData = (data: ProjectFormValues, keys: (keyof ProjectFormValues)[]) => {
+    const formData = new FormData();
+    keys.forEach((key) => {
+      const value = data[key];
+      if (value === undefined || value === null) return;
+      if (key === 'tags' && typeof value === 'string') {
+        value
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+          .forEach((tag) => formData.append('tags', tag));
+      } else if (typeof value === 'string' || value instanceof File) {
+        formData.append(key, value);
+      }
+    });
+    return formData;
+  };
+
+  const onSubmit = (data: ProjectFormValues) => {
+    if (isEdit) {
+      // Send only the fields the user actually changed.
+      const keys = Object.keys(dirtyFields) as (keyof ProjectFormValues)[];
+      const formData = buildFormData(data, keys);
+      updateProject(
+        { project: formData, projectId },
+        {
+          onSuccess: () => handleClose(),
+          onError: () => reset(formValues),
+        },
+      );
+    } else {
+      // Send every field for a brand new project.
+      const keys = Object.keys(data) as (keyof ProjectFormValues)[];
+      const formData = buildFormData(data, keys);
+      addProject(formData, {
+        onSuccess: () => {
+          reset();
+          handleClose();
+        },
+      });
     }
   };
 
   return (
     <Modal
       open={open}
-      slots={{
-        backdrop: Backdrop,
-      }}
-      slotProps={{
-        backdrop: {
-          timeout: 1000,
-        },
-      }}
+      slots={{ backdrop: Backdrop }}
+      slotProps={{ backdrop: { timeout: 1000 } }}
     >
-      <Box
-        sx={(theme) => ({
-          width: "400px",
-          backgroundColor: theme.palette.background.default,
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-50%)",
-          outline: 0,
-          borderRadius: theme.shape.borderRadius,
-          padding: theme.spacing(2, 3),
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: theme.palette.secondary.contrastText,
-              borderRadius: theme.shape.borderRadius,
-            },
-            "&:hover fieldset": {
-              borderColor: theme.palette.secondary.contrastText,
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: theme.palette.secondary.contrastText,
-            },
-          },
-          "& .MuiInputLabel-root": {
-            color: theme.palette.text.primary,
-          },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: theme.palette.text.primary,
-          },
-          "& .MuiButton-contained": {
-            width: "fit-content",
-            color: theme.palette.primary,
-            borderRadius: theme.shape.borderRadius,
-          },
-        })}
-      >
-        <Typography
-          gutterBottom
-          variant="h6"
-          sx={(theme) => ({
-            textAlign: "center",
-            color: theme.palette.text.primary,
-          })}
-        >
-          Project
-        </Typography>
+      <ProjectFormContainer>
         <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
           sx={(theme) => ({
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             gap: theme.spacing(2),
           })}
         >
-          <Controller
-            name="title"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "The title of the project is required ",
-              minLength: 2,
-            }}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                helperText={
-                  fieldState.error?.message || " The title of the project"
-                }
-                fullWidth
-                size="small"
-                label="Title"
-                error={!!fieldState.error}
-              />
-            )}
-          />
-          <Controller
-            name="github_url"
-            control={control}
-            rules={{ required: "Github Url is required!!" }}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                label="GitHub url"
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message ||
-                  "Url to github repository of the project"
-                }
-                fullWidth
-                size="small"
-              />
-            )}
-          />
-          <Controller
-            name="tags"
-            control={control}
-            rules={{ required: "technologies are required " }}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                label="Tags"
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message || "Comma separated technologies"
-                }
-                fullWidth
-                size="small"
-              />
-            )}
-          />
-          <Controller
-            name="description"
-            control={control}
-            rules={{ required: "Description of the project is required" }}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                multiline
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message || "Description of the project "
-                }
-                fullWidth
-                rows={8}
-                label="description"
-              />
-            )}
-          />
-          <Box
+          <Typography
+            gutterBottom
+            variant="h6"
             sx={(theme) => ({
-              display: "flex",
-              gap: theme.spacing(1),
-              justifyContent: "center",
+              textAlign: 'center',
+              color: theme.palette.text.primary,
             })}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              disableElevation
-              disabled={disable}
+            {isEdit ? 'Edit Project' : 'Create Project'}
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            sx={(theme) => ({
+              display: 'flex',
+              flexDirection: 'column',
+              gap: theme.spacing(2),
+            })}
+          >
+            <RHFTextField
+              control={control}
+              name="title"
+              label="Title"
+              helperText="Title of the project"
+            />
+            <RHFTextField
+              control={control}
+              name="github_url"
+              label="Github URL"
+              helperText="Github URL of the project repository"
+            />
+            <RHFTextField
+              control={control}
+              name="tags"
+              label="Tags"
+              helperText="Comma separated technologies"
+            />
+            <RHFTextField
+              control={control}
+              name="description"
+              label="Description"
+              helperText="Description of the project"
+              multiline
+              rows={4}
+            />
+            {imageUrl && (
+              <Box sx={{ height: '100px', my: '10px' }}>
+                <ProjectImage imageUrl={imageUrl} alt="Project image" />
+              </Box>
+            )}
+            <Box
+              sx={(theme) => ({
+                display: 'flex',
+                gap: theme.spacing(1),
+                justifyContent: 'center',
+              })}
             >
-              Submit
-            </Button>
-            <Button
-              variant="contained"
-              color="warning"
-              disableElevation
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                disableElevation
+                disabled={!isValid || isPending}
+              >
+                {isEdit ? 'Save' : 'Submit'}
+              </Button>
+              <Button
+                variant="contained"
+                color="warning"
+                disableElevation
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <ImageInput
+                name="image"
+                control={control}
+                setImageUrl={setImageUrl}
+                // Image is mandatory when creating; optional when editing
+                // (an existing image is already attached).
+                rules={isEdit ? undefined : { required: 'Image is required' }}
+              >
+                {isEdit ? 'Update Image' : 'Upload Image'}
+              </ImageInput>
+            </Box>
+            {errors.image && (
+              <Typography
+                color="error"
+                variant="caption"
+                sx={{ display: 'block', textAlign: 'center' }}
+              >
+                {errors.image.message}
+              </Typography>
+            )}
           </Box>
         </Box>
-      </Box>
+      </ProjectFormContainer>
     </Modal>
   );
 }

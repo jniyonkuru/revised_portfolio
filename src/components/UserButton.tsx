@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { User } from "lucide-react";
 
 interface Props {
   handleClick: () => void;
@@ -8,19 +8,17 @@ interface Props {
 function UserButton({ handleClick }: Props) {
   return (
     <IconButton
+      aria-label="Sign in"
+      onClick={handleClick}
       sx={(theme) => ({
+        color: theme.palette.text.primary,
+        transition: theme.transitions.create("background-color"),
         "&:hover": {
-          background: theme.palette.background + "20",
-          transform: "scale(1.01)",
-          transition: "transform 0.5s ease-in-out",
+          backgroundColor: theme.palette.action.hover,
         },
       })}
-      onClick={handleClick}
     >
-      <PersonOutlineIcon
-        fontSize="small"
-        sx={(theme) => ({ color: theme.palette.text.primary })}
-      />
+      <User size={20} />
     </IconButton>
   );
 }

@@ -1,131 +1,145 @@
-import { Box, Divider, Typography, IconButton } from "@mui/material";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import { useNavigate } from "react-router-dom";
+import { Box, Divider, Fab, Button } from '@mui/material';
+import type { Theme } from '@mui/material/styles';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { ArrowLeft } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 
 //local packages
-import NavList from "../dashboard/navigationlist";
-import ProjectList from "../dashboard/projectslist";
-import PrimaryTitle from "../dashboard/PrimaryTitle";
-import ExperiencesList from "../dashboard/ExperiencesList";
-import { useContext } from "react";
-import { UserContext } from "../../UserContext";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import ProjectList from '../dashboard/projectslist';
+import PrimaryTitle from '../dashboard/PrimaryTitle';
+import ExperiencesList from '../dashboard/ExperiencesList';
+import AccountMenu from '../dashboard/AccountMenu';
+import { useState } from 'react';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import ProjectForm from '../dashboard/ProjectForm.tsx';
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const { resetUser } = useContext(UserContext) || {
-    user: null,
-    resetUser: () => {},
-  };
+  const [createOpen, setCreateOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    resetUser();
-    navigate("/");
-  };
+  const columnSx = (theme: Theme) => ({
+    flex: 1,
+    minHeight: { xs: '60vh', md: 0 },
+    display: 'flex',
+    flexDirection: 'column' as const,
+    overflow: 'auto',
+    borderRadius: 2,
+    border: `1px solid ${theme.palette.divider}`,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(0, 2, 2),
+  });
+
   return (
     <Box
       sx={(theme) => ({
         backgroundColor: theme.palette.primary.main,
-        padding: theme.spacing(2),
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
+        padding: { xs: theme.spacing(1), md: theme.spacing(2) },
+        height: { xs: 'auto', md: '100vh' },
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: { xs: 'visible', md: 'hidden' },
       })}
     >
       <Box
         component="main"
         sx={(theme) => ({
-          display: "flex",
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
           flex: 1,
+          minHeight: 0,
           gap: theme.spacing(2),
         })}
       >
+        <ProjectForm open={createOpen} setOpen={setCreateOpen} />
         <Box
           component="section"
           sx={(theme) => ({
-            width: "200px",
-            display: "flex",
-            flexDirection: "column",
-            padding: theme.spacing(1),
-            backgroundColor: theme.palette.background.default,
-            borderRadius: theme.shape.borderRadius,
+            width: { xs: '100%', md: '200px' },
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: { xs: 'row', md: 'column' },
+            alignItems: { xs: 'center', md: 'stretch' },
+            justifyContent: { xs: 'space-between', md: 'flex-start' },
+            gap: { xs: theme.spacing(1), md: theme.spacing(1) },
+            padding: theme.spacing(1.5),
+            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: 2,
           })}
         >
-          <Box sx={() => ({ flex: 1 })}>
-            <NavList />
-            <Divider
-              sx={{
-                boxShadow: "0px 0.5px 0px rgba(255, 255, 255, 0.5)",
-                my: 2,
-              }}
-            />
-          </Box>
-          <Box
+          <Button
+            component={RouterLink}
+            to="/"
+            aria-label="Back to site"
             sx={(theme) => ({
-              padding: theme.spacing(1),
-              display: "flex",
-              gap: theme.spacing(1),
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: theme.palette.primary.main,
-              borderRadius: theme.shape.borderRadius,
-              color: theme.palette.text.primary,
+              flexShrink: 0,
+              minWidth: 0,
+              justifyContent: 'flex-start',
+              color: theme.palette.text.secondary,
+              textTransform: 'none',
+              order: { xs: -1, md: 0 },
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+                color: theme.palette.text.primary,
+              },
             })}
           >
-            <Typography>Log out</Typography>
-            <IconButton onClick={handleLogout}>
-              <ExitToAppOutlinedIcon fontSize="medium" />
-            </IconButton>
+            <ArrowLeft size={16} />
+            <Box
+              component="span"
+              sx={{ ml: 1, display: { xs: 'none', md: 'inline' } }}
+            >
+              Back to site
+            </Box>
+          </Button>
+          <Divider sx={{ display: { xs: 'none', md: 'block' }, my: 0.5 }} />
+          <Box sx={{ mt: { md: 'auto' } }}>
+            <AccountMenu />
           </Box>
         </Box>
         <Box
           sx={(theme) => ({
             flex: 1,
-            display: "flex",
+            minHeight: 0,
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
             gap: theme.spacing(2),
           })}
         >
-          <Box
-            sx={(theme) => ({
-              borderRadius: theme.shape.borderRadius,
-              backgroundColor: theme.palette.background.default,
-              overflow: "auto",
-              maxHeight: "95vh",
-              padding: theme.spacing(1, 2),
-              flex: 1,
-            })}
-          >
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={(theme) => ({
-                fontWeight: theme.typography.fontWeightBold,
-                textAlign: "center",
-              })}
-            >
-              <Box sx={{ position: "sticky", top: 0 }}>
-                <PrimaryTitle>Projects</PrimaryTitle>
-              </Box>
-            </Typography>
+          <Box sx={columnSx}>
+            <PrimaryTitle>Projects</PrimaryTitle>
             <ErrorBoundary>
               <ProjectList />
             </ErrorBoundary>
-          </Box>
-          <Box
-            sx={(theme) => ({
-              borderRadius: theme.shape.borderRadius,
-              backgroundColor: theme.palette.background.default,
-              flex: 1,
-              padding: theme.spacing(1, 2),
-              maxHeight: "95vh",
-              overflow: "auto",
-              position: "relative",
-            })}
-          >
-            <Box sx={{ position: "sticky", top: 0 }}>
-              <PrimaryTitle>Experiences</PrimaryTitle>
+            <Box
+              sx={(theme) => ({
+                position: 'sticky',
+                bottom: theme.spacing(2),
+                display: 'flex',
+                justifyContent: 'flex-end',
+                pointerEvents: 'none',
+                mt: 'auto',
+                pt: 2,
+              })}
+            >
+              <Fab
+                onClick={() => setCreateOpen(true)}
+                aria-label="Add project"
+                sx={(theme) => ({
+                  pointerEvents: 'auto',
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.text.primary,
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.dark,
+                  },
+                })}
+              >
+                <AddOutlinedIcon />
+              </Fab>
             </Box>
+          </Box>
+          <Box sx={columnSx}>
+            <PrimaryTitle>Experiences</PrimaryTitle>
             <ErrorBoundary>
               <ExperiencesList />
             </ErrorBoundary>

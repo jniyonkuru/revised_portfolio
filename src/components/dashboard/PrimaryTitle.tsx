@@ -8,20 +8,20 @@ function PrimaryTitle({ children }: { children: React.ReactNode }) {
         position: "sticky",
         top: 0,
         zIndex: 1,
-        backdropFilter: "blur(10px)",
-        backgroundColor: theme.palette.primary.main ,
+        backdropFilter: "blur(8px)",
+        backgroundColor:
+          "rgba(var(--mui-palette-background-paperChannel) / 0.85)",
         color: theme.palette.text.primary,
-        p: theme.spacing(1),
-        borderRadius: theme.shape.borderRadius,
+        px: 2,
+        py: 1.25,
+        mb: 1,
+        borderBottom: `1px solid ${theme.palette.divider}`,
       })}
     >
       <Typography
-        variant="h5"
-        gutterBottom
-        sx={(theme) => ({
-          fontWeight: theme.typography.fontWeightBold,
-          textAlign: "center",
-        })}
+        variant="h6"
+        align="center"
+        sx={{ fontWeight: 700 }}
       >
         {children}
       </Typography>

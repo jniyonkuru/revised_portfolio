@@ -10,13 +10,15 @@ function ProfileImage({ width, height }: Props) {
     <Box
       component="img"
       src="/me.jpg"
-      alt="Random"
+      alt="Niyonkuru Jacques"
       sx={{
-        width: width ? `${width}px` : "150px",
-        height: height ? `${height}px` : "150px",
-        borderRadius:"inherit",
+        width: width ?? { xs: 120, md: 150 },
+        height: height ?? { xs: 120, md: 150 },
+        borderRadius: "inherit",
+        objectFit: "cover",
+        display: "block",
       }}
-    ></Box>
+    />
   );
 }
 

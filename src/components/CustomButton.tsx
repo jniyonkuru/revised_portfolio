@@ -1,28 +1,29 @@
 import React from 'react'
-import { Button} from '@mui/material';
-import { SvgIconProps } from '@mui/material';
+import { Button } from '@mui/material';
 
-interface Props{
-  text:string,
-  Icon:React.ComponentType<SvgIconProps>,
-  href:string,
-  other?:Record<string,any>
+interface Props {
+  text: string;
+  icon: React.ReactNode;
+  href: string;
+  external?: boolean;
+  other?: Record<string, unknown>;
 }
 
-function CustomButton({Icon,text,href,other}:Props) {
+function CustomButton({ icon, text, href, external, other }: Props) {
   return (
     <Button
       href={href}
-      variant="contained"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      variant="outlined"
+      startIcon={icon}
       sx={(theme) => ({
-        color: "#000",
-        backgroundColor: "#EEEEEE",
-        mr: 2,
-        borderRadius:theme.shape.borderRadius,
-        mb:theme.spacing(1),
-        ...other,
+        color: theme.palette.text.primary,
+        borderColor: theme.palette.divider,
+        borderRadius: 2,
+        textTransform: "none",
       })}
-      startIcon={<Icon />}
+      {...other}
     >
       {text}
     </Button>
